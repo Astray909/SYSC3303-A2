@@ -12,7 +12,21 @@ import java.net.*;
  *
  */
 public class Server {
+	
+	private static DatagramPacket sendPacket, receivePacket;
+	private static DatagramSocket sendSocket, receiveSocket;
+	private boolean running;
+	private byte[] buf = new byte[256];
 
+	public Server()
+	{
+		try {
+			receiveSocket = new DatagramSocket(4445);
+		} catch (SocketException se) {
+			se.printStackTrace();
+			System.exit(1);
+		}
+	}
 	/**
 	 * @param args
 	 */
