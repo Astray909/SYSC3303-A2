@@ -16,7 +16,6 @@ public class Client
 
 	private DatagramPacket sendPacket, receivePacket;
 	private DatagramPacket sendReceiveSocket;
-	private static int port = 23;
 	
 	public Client()
 	{
