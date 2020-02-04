@@ -15,9 +15,20 @@ public class Client
 {
 
 	private DatagramPacket sendPacket, receivePacket;
-	private DatagramPacket sendReceiveSocket;
+	private DatagramSocket sendReceiveSocket;
 	
 	public Client()
+	{
+		try {
+			sendReceiveSocket = new DatagramSocket();
+		} catch (SocketException se) {
+			// TODO Auto-generated catch block
+			se.printStackTrace();
+			System.exit(1);
+		}
+	}
+	
+	public void sendAndReceive()
 	{
 		
 	}
