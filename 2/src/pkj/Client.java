@@ -11,7 +11,8 @@ import java.net.*;
  * @version Feb 3, 2020
  *
  */
-public class Client {
+public class Client
+{
 
 	private DatagramPacket sendPacket, receivePacket;
 	private DatagramPacket sendReceiveSocket;

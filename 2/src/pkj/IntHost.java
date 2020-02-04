@@ -11,7 +11,8 @@ import java.net.*;
  * @version Feb 3, 2020
  *
  */
-public class IntHost {
+public class IntHost
+{
 
 	/**
 	 * @param args
