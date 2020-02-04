@@ -28,11 +28,43 @@ public class Client
 		}
 	}
 	
-	public void sendAndReceive()
+	/**
+	 * build a packet that sends to a specific port on a host
+	 * @param pkg: the package to be sent
+	 * @param port: the port where the poackage will be sent to
+	 */
+	public void sendAndReceive(byte[] msg, int port)
 	{
 		
 	}
 	
+	/**
+	 * builds and sends a new Packet
+	 * @param msg: the message you want to send
+	 * @param len: length of the message
+	 * @param desti: destination ip
+	 * @param port: destination port
+	 * @param s: source socket
+	 * @param source: source address
+	 */
+	public void sendPacket(byte[]msg, int len, InetAddress desti, int port, DatagramSocket s, String source)
+	{
+		DatagramPacket packet = buildPacket(msg, len, desti, port);
+		
+	}
+	
+	/**
+	 * builds a new packet
+	 * @param msg: the message you want to convert
+	 * @param len: length of the message
+	 * @param desti: destination address
+	 * @param port: destination port
+	 */
+	public DatagramPacket buildPacket(byte[]msg, int len, InetAddress desti, int port)
+	{
+		DatagramPacket packet = new DatagramPacket(msg, len, desti, port);
+		return packet;
+	}
 	/**
 	 * @param args
 	 */
