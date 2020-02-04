@@ -14,6 +14,9 @@ import java.net.*;
 public class Client
 {
 
+	private static final int INT_PORT = 23;
+	private static final int SERVER_PORT = 69;
+	
 	private DatagramPacket sendPacket, receivePacket;
 	private DatagramSocket sendReceiveSocket;
 	
@@ -50,7 +53,24 @@ public class Client
 	public void sendPacket(byte[]msg, int len, InetAddress desti, int port, DatagramSocket s, String source)
 	{
 		DatagramPacket packet = buildPacket(msg, len, desti, port);
+		System.out.println(source + ": is sending a packet:");
 		
+		//prints out information about the packet
+		System.out.println("Packet from host: " + packet.getAddress());
+		System.out.println("From host port: " + packet.getPort());
+		System.out.println("Length: " + packet.getLength());
+		System.out.print("Containing: " );
+		//prints out the packet;
+		
+		try
+		{
+			s.send(packet);
+		} catch (IOException ie)
+		{
+			ie.printStackTrace();
+			System.exit(1);
+		}
+		System.out.println(source + ": packet sent\n");
 	}
 	
 	/**
