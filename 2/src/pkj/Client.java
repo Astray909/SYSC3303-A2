@@ -73,6 +73,11 @@ public class Client
 		System.out.println(source + ": packet sent\n");
 	}
 	
+	public void waitPacket(DatagramSocket s, String source)
+	{
+		//
+	}
+	
 	/**
 	 * builds a new packet
 	 * @param msg: the message you want to convert
