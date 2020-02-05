@@ -59,7 +59,7 @@ public class Client
 		System.out.println("Packet from host: " + packet.getAddress());
 		System.out.println("From host port: " + packet.getPort());
 		System.out.println("Length: " + packet.getLength());
-		System.out.print("Containing: " );
+		//System.out.print("Containing: " );
 		//prints out the packets;
 		
 		try
@@ -99,7 +99,7 @@ public class Client
 		System.out.println("Packet from host: " + receivedPacket.getAddress());
 		System.out.println("From host port: " + receivedPacket.getPort());
 		System.out.println("Length: " + receivedPacket.getLength());
-		System.out.print("Containing: " );
+		//System.out.print("Containing: " );
 		
 		return receivedPacket;
 	}
