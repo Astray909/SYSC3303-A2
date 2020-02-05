@@ -60,7 +60,7 @@ public class Client
 		System.out.println("From host port: " + packet.getPort());
 		System.out.println("Length: " + packet.getLength());
 		System.out.print("Containing: " );
-		//prints out the packet;
+		//prints out the packets;
 		
 		try
 		{
