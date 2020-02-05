@@ -53,7 +53,7 @@ public class Client
 	public void sendPacket(byte[]msg, int len, InetAddress desti, int port, DatagramSocket s, String source)
 	{
 		DatagramPacket packet = buildPacket(msg, len, desti, port);
-		System.out.println(source + ": is sending a packet:");
+		System.out.println("The source " + source + " is sending a packet:");
 		
 		//prints out information about the packet
 		System.out.println("Packet from host: " + packet.getAddress());
@@ -73,9 +73,35 @@ public class Client
 		System.out.println(source + ": packet sent\n");
 	}
 	
-	public void waitPacket(DatagramSocket s, String source)
+	/**
+	 * wait for a packet from host, when received, prints out its information as well as its content
+	 * @param s: DatagramSocket to receive
+	 * @param source: source host
+	 * @return the packet received
+	 */
+	public DatagramPacket waitPacket(DatagramSocket s, String source)
 	{
-		//
+		byte msg[] = new byte[100];
+		DatagramPacket receivedPacket = new DatagramPacket(msg, msg.length);
+		System.out.println("The source " + source + " is waiting for a packet");
+		
+		try {
+			System.out.println("waiting...");
+			s.receive(receivePacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		System.out.println("The source " + source + " has received the packet");
+		
+		//prints out information about the packet
+		System.out.println("Packet from host: " + receivedPacket.getAddress());
+		System.out.println("From host port: " + receivedPacket.getPort());
+		System.out.println("Length: " + receivedPacket.getLength());
+		System.out.print("Containing: " );
+		
+		return receivedPacket;
 	}
 	
 	/**
