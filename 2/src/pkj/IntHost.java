@@ -52,7 +52,7 @@ public class IntHost
 	 * put the currently running thread to sleep for int seconds
 	 * @param seconds: the amount of seconds to sleep
 	 */
-	private void sleepThread(int seconds)
+	private static void sleepThread(int seconds)
 	{
 		try
 		{
