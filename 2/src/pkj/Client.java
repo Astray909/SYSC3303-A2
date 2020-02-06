@@ -38,7 +38,14 @@ public class Client
 	 */
 	public void sendAndReceive(byte[] msg, int port)
 	{
-		
+		try {
+			sendPacket(msg, msg.length, InetAddress.getLocalHost(), INT_PORT, sendReceiveSocket, "Client");
+		}
+		catch (UnknownHostException he){
+			he.printStackTrace();
+			System.exit(1);
+		}
+		receivePacket = waitPacket(sendReceiveSocket, "Client");
 	}
 	
 	/**
