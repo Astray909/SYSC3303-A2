@@ -170,7 +170,7 @@ public class Client
 		try
 		{
 			System.out.println("waiting...");
-			s.receive(receivePacket);
+			s.receive(receivedPacket);
 		}
 		catch (IOException e)
 		{
@@ -264,7 +264,14 @@ public class Client
 		}
 		*/
 		Client c = new Client();
-		c.readwriteRequest(10);
+		boolean r = true;
+		for (int i = 0; i<10; i++)
+		{
+			String s = "testfile.txt";
+			byte[] msg = msgBuilder(r, s, "octet");
+			c.sendAndReceive(msg, IntHost.port);
+			r = !r;
+		}
 		byte[] err = msgBuilder(false, "invalid request", "netascii");
 		c.sendAndReceive(err, IntHost.port);
 		c.sendReceiveSocket.close();
