@@ -229,13 +229,30 @@ public class Client
 		DatagramPacket packet = new DatagramPacket(msg, len, desti, port);
 		return packet;
 	}
+	
+	/**
+	 * generate readwriteRequests
+	 * @param times: amount of readwriteRequests generated
+	 */
+	private void readwriteRequest(int times)
+	{
+		boolean r = true;
+		for (int i = 0; i<times; i++)
+		{
+			String s = "testfile.txt";
+			byte[] msg = msgBuilder(r, s, "octet");
+			sendAndReceive(msg, IntHost.port);
+			r = !r;
+		}
+	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
+		/**
+		// Test code for msgBuilder and printing
 		byte[] in = msgBuilder(true, "inn!", "netascii");
 		byte[] out = msgBuilder(false, "out!", "octet");
 		for(int i=0; i< in.length ; i++) {
@@ -245,6 +262,12 @@ public class Client
 		for(int i=0; i< out.length ; i++) {
 			System.out.print(out[i] +" ");
 		}
+		*/
+		Client c = new Client();
+		c.readwriteRequest(10);
+		byte[] err = msgBuilder(false, "invalid request", "netascii");
+		c.sendAndReceive(err, IntHost.port);
+		c.sendReceiveSocket.close();
 	}
 
 }

@@ -178,7 +178,11 @@ public class Server
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//todo
+		Server s = new Server();
+		while(true)
+		{
+			s.echo();
+		}
 
 	}
 
