@@ -20,12 +20,14 @@ public class Client
 	private DatagramPacket sendPacket, receivePacket;
 	private DatagramSocket sendReceiveSocket;
 	
+	/**
+	 * constructor
+	 */
 	public Client()
 	{
 		try {
 			sendReceiveSocket = new DatagramSocket();
 		} catch (SocketException se) {
-			// TODO Auto-generated catch block
 			se.printStackTrace();
 			System.exit(1);
 		}
@@ -46,6 +48,81 @@ public class Client
 			System.exit(1);
 		}
 		receivePacket = waitPacket(sendReceiveSocket, "Client");
+	}
+	
+	/**
+	 * merges two arrays
+	 * @param a: one of the arrays
+	 * @param b: the other array
+	 * @return result: the merged array
+	 */
+	private byte[] concatenate(byte[] a, byte[] b)
+	{
+		int aLen = a.length;
+		int bLen = b.length;
+		
+		byte[] result = new byte[aLen + bLen];
+		
+		System.arraycopy(a, 0, result, 0, aLen);
+        System.arraycopy(b, 0, result, aLen, bLen);
+        
+        return result;
+	}
+	
+	/**
+	 * builds the byte array to be passed as message
+	 * @param r: r for read mode, !r for write mode
+	 * @param fileName: filename
+	 * @param mode: mode, octet or netascii
+	 * @return returns the byte array
+	 */
+	private byte[] msgBuilder(boolean r, String fileName, String mode)
+	{
+		byte[] read = {0, 1};
+		byte[] write = {0, 2};
+		byte[] invalid = {0, 0};
+		byte[] zero = {0};
+		
+		byte[] header = new byte[2];
+		if(r)
+		{
+			header = read;
+		}
+		else
+		{
+			header = write;
+		}
+		if(!mode.equalsIgnoreCase("octet") || !mode.equalsIgnoreCase("netascii"))
+		{
+			System.out.println("wrong mode, please change mode to either octet or netascii");
+			System.exit(1);
+		}
+		
+		byte[] NAME = fileName.getBytes();
+		byte[] MODE = mode.getBytes();
+		
+		return makeMsg(header, read, write, zero, NAME, MODE);
+	}
+	
+	/**
+	 * construct byte array
+	 * @param header: header bytes, 01 for read, 02 for write
+	 * @param read: read or write state
+	 * @param write: read or write state
+	 * @param zero: to insert zero
+	 * @param fileName: 
+	 * @param mode
+	 * @return
+	 */
+	private byte[] makeMsg(byte[] header, byte[] read, byte[] write, byte[] zero, byte[] NAME, byte[] MODE)
+	{
+		byte[] build1 = concatenate(header, NAME);
+		byte[] build2 = concatenate(build1, zero);
+		byte[] build3 = concatenate(build2, MODE);
+		
+		byte[] finalBuild = concatenate(build3, zero);
+		
+		return finalBuild;
 	}
 	
 	/**
