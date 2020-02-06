@@ -16,6 +16,7 @@ public class IntHost
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket;
 	static final String INTHOST = "Intermediate Server";
+	public static final int port = 23;
 
 	/**
 	 * constructor
@@ -25,7 +26,7 @@ public class IntHost
 		try
 		{
 			sendSocket = new DatagramSocket();
-			receiveSocket = new DatagramSocket(23);
+			receiveSocket = new DatagramSocket(port);
 		}
 		catch(SocketException se)
 		{
@@ -42,7 +43,7 @@ public class IntHost
 		DatagramPacket receivePacket = Client.waitPacket(receiveSocket, INTHOST);
 		int clientPort = receivePacket.getPort();
 		sleepThread(1);
-		Client.sendPacket(receivePacket.getData(), receivePacket.getLength(), receivePacket.getAddress(), 69, sendSocket, INTHOST);
+		Client.sendPacket(receivePacket.getData(), receivePacket.getLength(), receivePacket.getAddress(), Server.port, sendSocket, INTHOST);
 		DatagramPacket reply = Client.waitPacket(receiveSocket, "Intermediate Server");
 		Client.sendPacket(reply.getData(), reply.getLength(), reply.getAddress(), clientPort, sendSocket, INTHOST);
 	}

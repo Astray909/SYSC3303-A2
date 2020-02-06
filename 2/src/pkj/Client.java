@@ -13,10 +13,6 @@ import java.net.*;
  */
 public class Client
 {
-
-	private static final int INT_PORT = 23;
-	private static final int SERVER_PORT = 69;
-
 	private DatagramPacket sendPacket;
 	private static DatagramPacket receivePacket;
 	private DatagramSocket sendReceiveSocket;
@@ -42,7 +38,7 @@ public class Client
 	public void sendAndReceive(byte[] msg, int port)
 	{
 		try {
-			sendPacket(msg, msg.length, InetAddress.getLocalHost(), INT_PORT, sendReceiveSocket, "Client");
+			sendPacket(msg, msg.length, InetAddress.getLocalHost(), IntHost.port, sendReceiveSocket, "Client");
 		}
 		catch (UnknownHostException he){
 			he.printStackTrace();
