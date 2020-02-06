@@ -16,10 +16,11 @@ public class Client
 
 	private static final int INT_PORT = 23;
 	private static final int SERVER_PORT = 69;
-	
-	private DatagramPacket sendPacket, receivePacket;
+
+	private DatagramPacket sendPacket;
+	private static DatagramPacket receivePacket;
 	private DatagramSocket sendReceiveSocket;
-	
+
 	/**
 	 * constructor
 	 */
@@ -32,7 +33,7 @@ public class Client
 			System.exit(1);
 		}
 	}
-	
+
 	/**
 	 * build a packet that sends to a specific port on a host
 	 * @param pkg: the package to be sent
@@ -49,7 +50,7 @@ public class Client
 		}
 		receivePacket = waitPacket(sendReceiveSocket, "Client");
 	}
-	
+
 	/**
 	 * merges two arrays
 	 * @param a: one of the arrays
@@ -60,15 +61,15 @@ public class Client
 	{
 		int aLen = a.length;
 		int bLen = b.length;
-		
+
 		byte[] result = new byte[aLen + bLen];
-		
+
 		System.arraycopy(a, 0, result, 0, aLen);
-        System.arraycopy(b, 0, result, aLen, bLen);
-        
-        return result;
+		System.arraycopy(b, 0, result, aLen, bLen);
+
+		return result;
 	}
-	
+
 	/**
 	 * builds the byte array to be passed as message
 	 * @param r: r for read mode, !r for write mode
@@ -82,7 +83,7 @@ public class Client
 		byte[] write = {0, 2};
 		byte[] invalid = {0, 0};
 		byte[] zero = {0};
-		
+
 		byte[] header = new byte[2];
 		if(r)
 		{
@@ -92,19 +93,19 @@ public class Client
 		{
 			header = write;
 		}
-		
+
 		if(!mode.equalsIgnoreCase("octet") && !mode.equalsIgnoreCase("netascii"))
 		{
 			System.out.println("wrong mode, please change mode to either octet or netascii");
 			System.exit(1);
 		}
-		
+
 		byte[] NAME = fileName.getBytes();
 		byte[] MODE = mode.getBytes();
-		
+
 		return makeMsg(header, read, write, zero, NAME, MODE);
 	}
-	
+
 	/**
 	 * construct byte array
 	 * @param header: header bytes, 01 for read, 02 for write
@@ -120,12 +121,12 @@ public class Client
 		byte[] build1 = concatenate(header, NAME);
 		byte[] build2 = concatenate(build1, zero);
 		byte[] build3 = concatenate(build2, MODE);
-		
+
 		byte[] finalBuild = concatenate(build3, zero);
-		
+
 		return finalBuild;
 	}
-	
+
 	/**
 	 * builds and sends a new Packet
 	 * @param msg: the message you want to send
@@ -135,18 +136,18 @@ public class Client
 	 * @param s: source socket
 	 * @param source: source address
 	 */
-	public void sendPacket(byte[]msg, int len, InetAddress desti, int port, DatagramSocket s, String source)
+	public static void sendPacket(byte[]msg, int len, InetAddress desti, int port, DatagramSocket s, String source)
 	{
 		DatagramPacket packet = buildPacket(msg, len, desti, port);
 		System.out.println("The source " + source + " is sending a packet:");
-		
+
 		//prints out information about the packet
 		System.out.println("Packet from host: " + packet.getAddress());
 		System.out.println("From host port: " + packet.getPort());
 		System.out.println("Length: " + packet.getLength());
 		System.out.print("Containing: " );
 		print(msg, msg.length);
-		
+
 		try
 		{
 			s.send(packet);
@@ -157,45 +158,48 @@ public class Client
 		}
 		System.out.println(source + ": packet sent\n");
 	}
-	
+
 	/**
 	 * wait for a packet from host, when received, prints out its information as well as its content
 	 * @param s: DatagramSocket to receive
 	 * @param source: source host
 	 * @return the packet received
 	 */
-	public DatagramPacket waitPacket(DatagramSocket s, String source)
+	public static DatagramPacket waitPacket(DatagramSocket s, String source)
 	{
 		byte msg[] = new byte[100];
 		DatagramPacket receivedPacket = new DatagramPacket(msg, msg.length);
 		System.out.println("The source " + source + " is waiting for a packet");
-		
-		try {
+
+		try
+		{
 			System.out.println("waiting...");
 			s.receive(receivePacket);
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
+
 		System.out.println("The source " + source + " has received the packet");
-		
+
 		//prints out information about the packet
 		System.out.println("Packet from host: " + receivedPacket.getAddress());
 		System.out.println("From host port: " + receivedPacket.getPort());
 		System.out.println("Length: " + receivedPacket.getLength());
 		System.out.print("Containing: " );
 		print(msg, msg.length);
-		
+
 		return receivedPacket;
 	}
-	
+
 	/**
 	 * prints out the contents of a byte array
 	 * @param bytes: the byte array
 	 * @param len: length of the byte array
 	 */
-	private void print(byte[] bytes, int len)
+	private static void print(byte[] bytes, int len)
 	{
 		System.out.print("Data as bytes: ");
 		for (int i=0; i<len; i++) {
@@ -216,6 +220,7 @@ public class Client
 		}
 		System.out.print("\n\n");
 	}
+
 	/**
 	 * builds a new packet
 	 * @param msg: the message you want to convert
@@ -223,17 +228,27 @@ public class Client
 	 * @param desti: destination address
 	 * @param port: destination port
 	 */
-	public DatagramPacket buildPacket(byte[]msg, int len, InetAddress desti, int port)
+	public static DatagramPacket buildPacket(byte[]msg, int len, InetAddress desti, int port)
 	{
 		DatagramPacket packet = new DatagramPacket(msg, len, desti, port);
 		return packet;
 	}
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args)
 	{
 		// TODO Auto-generated method stub
+		byte[] in = msgBuilder(true, "inn!", "netascii");
+		byte[] out = msgBuilder(false, "out!", "octet");
+		for(int i=0; i< in.length ; i++) {
+			System.out.print(in[i] +" ");
+		}
+		System.out.println("");
+		for(int i=0; i< out.length ; i++) {
+			System.out.print(out[i] +" ");
+		}
 	}
 
 }
