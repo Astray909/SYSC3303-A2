@@ -56,7 +56,7 @@ public class Client
 	 * @param b: the other array
 	 * @return result: the merged array
 	 */
-	private byte[] concatenate(byte[] a, byte[] b)
+	private static byte[] concatenate(byte[] a, byte[] b)
 	{
 		int aLen = a.length;
 		int bLen = b.length;
@@ -76,7 +76,7 @@ public class Client
 	 * @param mode: mode, octet or netascii
 	 * @return returns the byte array
 	 */
-	private byte[] msgBuilder(boolean r, String fileName, String mode)
+	private static byte[] msgBuilder(boolean r, String fileName, String mode)
 	{
 		byte[] read = {0, 1};
 		byte[] write = {0, 2};
@@ -92,7 +92,8 @@ public class Client
 		{
 			header = write;
 		}
-		if(!mode.equalsIgnoreCase("octet") || !mode.equalsIgnoreCase("netascii"))
+		
+		if(!mode.equalsIgnoreCase("octet") && !mode.equalsIgnoreCase("netascii"))
 		{
 			System.out.println("wrong mode, please change mode to either octet or netascii");
 			System.exit(1);
@@ -114,7 +115,7 @@ public class Client
 	 * @param mode
 	 * @return
 	 */
-	private byte[] makeMsg(byte[] header, byte[] read, byte[] write, byte[] zero, byte[] NAME, byte[] MODE)
+	private static byte[] makeMsg(byte[] header, byte[] read, byte[] write, byte[] zero, byte[] NAME, byte[] MODE)
 	{
 		byte[] build1 = concatenate(header, NAME);
 		byte[] build2 = concatenate(build1, zero);
@@ -143,8 +144,8 @@ public class Client
 		System.out.println("Packet from host: " + packet.getAddress());
 		System.out.println("From host port: " + packet.getPort());
 		System.out.println("Length: " + packet.getLength());
-		//System.out.print("Containing: " );
-		//prints out the packets;
+		System.out.print("Containing: " );
+		print(msg, msg.length);
 		
 		try
 		{
@@ -183,11 +184,38 @@ public class Client
 		System.out.println("Packet from host: " + receivedPacket.getAddress());
 		System.out.println("From host port: " + receivedPacket.getPort());
 		System.out.println("Length: " + receivedPacket.getLength());
-		//System.out.print("Containing: " );
+		System.out.print("Containing: " );
+		print(msg, msg.length);
 		
 		return receivedPacket;
 	}
 	
+	/**
+	 * prints out the contents of a byte array
+	 * @param bytes: the byte array
+	 * @param len: length of the byte array
+	 */
+	private void print(byte[] bytes, int len)
+	{
+		System.out.print("Data as bytes: ");
+		for (int i=0; i<len; i++) {
+			System.out.print(Integer.toHexString(bytes[i]));
+			System.out.print(' ');
+		}
+		System.out.print("\n");
+
+		System.out.print("Data as string: ");
+		for (int i=0; i<len; i++) {
+			if (bytes[i] < 32) {
+				System.out.print((char) (bytes[i] + '0'));
+			}
+			else {
+				System.out.print((char) bytes[i]);
+			}
+			System.out.print(' ');
+		}
+		System.out.print("\n\n");
+	}
 	/**
 	 * builds a new packet
 	 * @param msg: the message you want to convert
@@ -206,7 +234,6 @@ public class Client
 	public static void main(String[] args)
 	{
 		// TODO Auto-generated method stub
-		
 	}
 
 }
