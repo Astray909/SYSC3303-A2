@@ -14,11 +14,11 @@ import java.net.*;
 public class Server
 {
 
-	private static DatagramPacket sendPacket, receivePacket;
+	private static DatagramPacket receivePacket;
 	private static DatagramSocket sendSocket, receiveSocket;
 	byte[] readRequest = {0, 3, 0, 1};
 	byte[] writeRequest = {0, 4, 0, 1};
-	private boolean running;
+	//private boolean running;
 	//private byte[] buf = new byte[256];
 	public static final int port = 69;
 
@@ -29,7 +29,7 @@ public class Server
 	{
 		try
 		{
-			sendSocket = new DatagramSocket(IntHost.port);
+			sendSocket = new DatagramSocket();
 			receiveSocket = new DatagramSocket(port);
 		}
 		catch (SocketException se)

@@ -13,8 +13,6 @@ import java.net.*;
  */
 public class Client
 {
-	private DatagramPacket sendPacket;
-	private static DatagramPacket receivePacket;
 	private DatagramSocket sendReceiveSocket;
 
 	/**
@@ -44,7 +42,7 @@ public class Client
 			he.printStackTrace();
 			System.exit(1);
 		}
-		receivePacket = waitPacket(sendReceiveSocket, "Client");
+		waitPacket(sendReceiveSocket, "Client");
 	}
 
 	/**
@@ -77,7 +75,6 @@ public class Client
 	{
 		byte[] read = {0, 1};
 		byte[] write = {0, 2};
-		byte[] invalid = {0, 0};
 		byte[] zero = {0};
 
 		byte[] header = new byte[2];
@@ -230,22 +227,6 @@ public class Client
 		return packet;
 	}
 	
-	/**
-	 * generate readwriteRequests
-	 * @param times: amount of readwriteRequests generated
-	 */
-	private void readwriteRequest(int times)
-	{
-		boolean r = true;
-		for (int i = 0; i<times; i++)
-		{
-			String s = "testfile.txt";
-			byte[] msg = msgBuilder(r, s, "octet");
-			sendAndReceive(msg, IntHost.port);
-			r = !r;
-		}
-	}
-
 	/**
 	 * @param args
 	 */
